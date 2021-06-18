@@ -55,9 +55,10 @@ group :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "rexml"
-  gem "rspec_junit_formatter"
+
   gem "rspec-rails"
   gem "webdrivers"
+  gem "rspec_junit_formatter"
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
