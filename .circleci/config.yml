@@ -246,7 +246,7 @@ rubocop:
     - run:
         name: Execute rubocop
         command: |
-          bundle exec rubocop
+          bundle exec rubocop -a
 
 workflows:
   build:
