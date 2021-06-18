@@ -8,7 +8,7 @@ class Api::V1::TodosController < ApplicationController
 
   def create
     @todo = Todo.create!(todo_params)
-    #作成したデータはリストに追加していくためデータを返す
+    # 作成したデータはリストに追加していくためデータを返す
     render json: @todo
   end
 
@@ -21,6 +21,7 @@ class Api::V1::TodosController < ApplicationController
   end
 
   private
+
     def set_todo
       @todo = Todo.find(params[:id])
     end
