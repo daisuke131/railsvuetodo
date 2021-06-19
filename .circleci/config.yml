@@ -163,13 +163,21 @@ jobs:
       - ruby/install-deps
       - node/install-packages:
           pkg-manager: yarn
+
+
+
+      - run: mv ./config/database.yml.ci ./config/database.yml
+
+
+
+
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://db:3306 -timeout 1m
 
 
 
-      - run: mv ./config/database.yml.ci ./config/database.yml
+
 
 
 
