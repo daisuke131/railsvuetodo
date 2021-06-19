@@ -140,7 +140,7 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/ruby:3.0.1
+      - image: cimg/ruby:3.0.1-node
     steps:
       - checkout
       - ruby/install-deps
@@ -148,7 +148,7 @@ jobs:
           pkg-manager: yarn
   test:
     docker:
-      - image: cimg/ruby:3.0.1
+      - image: cimg/ruby:3.0.1-node
         environment:
           RAILS_ENV: test
       - image: circleci/mysql:8.0.25
