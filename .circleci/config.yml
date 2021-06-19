@@ -131,78 +131,56 @@
 
 
 
-version: 2.1  # 2.0以下だとOrbが使用できない
+version: 2.1
 
 orbs:
-  # ruby: circleci/ruby@1.1.2
-  ruby: circleci/ruby@1.1.3
-  # node: circleci/node@4.2.0
-  node: circleci/node@4.5.1
-  # heroku: circleci/heroku@1.2.6
+  ruby: circleci/ruby@1.1.2
+  node: circleci/node@4.2.0
 
 jobs:
   build:
     docker:
-      # - image: circleci/ruby:3.0.1  # Rubyのバージョンに合わせる
       - image: cimg/ruby:3.0.1
     steps:
       - checkout
-      - ruby/install-deps  # => bundle install
+      - ruby/install-deps
       - node/install-packages:
-          pkg-manager: yarn  # Rails6ではwebpackerを用いるためyarnのインストールが必要
+          pkg-manager: yarn
   test:
     docker:
-      # - image: circleci/ruby:2.6.7-node-browsers
       - image: cimg/ruby:3.0.1
         environment:
           RAILS_ENV: test
-      - image: circleci/mysql:latest  # MySQLのバージョンに合わせる
+      - image: circleci/mysql:8.0.25
         name: db
-        command: mysqld --default-authentication-plugin=mysql_native_password  # MySQL8を用いる場合必要
+        command: mysqld --default-authentication-plugin=mysql_native_password
         environment:
-          # MYSQL_ROOT_PASSWORD: password
           MYSQL_ALLOW_EMPTY_PASSWORD: true
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
-      # TZ: Asia/Tokyo # タイムゾーンの設定
     steps:
       - checkout
-      - ruby/install-deps:
-          # bundler-version: '2.2.19'  # Bundlerのバージョンに合わせる
-          bundler-version: '1.15.0'  # Bundlerのバージョンに合わせる
+      - ruby/install-deps
       - node/install-packages:
           pkg-manager: yarn
-      - run: sudo apt-get update
-      - run: sudo apt-get -y install imagemagick  # carrierwaveで使用するためimagemagickをインストール
       - run:
           name: Wait for DB
-          command: dockerize -wait tcp://db:3306 -timeout 1m  # dbコンテナの起動を待つ
+          command: dockerize -wait tcp://db:3306 -timeout 1m
 
       - run: mv ./config/database.yml.ci ./config/database.yml
 
       - run:
           name: Database setup
-          command: |
-            bundle exec rails db:create
-            bundle exec rails db:schema:load --trace
+          command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
       - ruby/rubocop-check
 
 workflows:
   version: 2
-  build_test_and_deploy:
+  build_and_test:
     jobs:
       - build
       - test:
           requires:
             - build
-      # - heroku/deploy-via-git:
-      #     requires:
-      #       - test
-      #     post-steps:
-      #       - run:
-      #           command: heroku run bundle exec rake db:migrate --app $HEROKU_APP_NAME  # deploy後にdb:migrateを実行
-      #     filters:
-      #       branches:
-      #         only: main
