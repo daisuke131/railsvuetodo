@@ -42,7 +42,7 @@ jobs:
           # command: bundle exec rails db:create db:schema:load --trace
           # command: bundle exec rails db:create db:schema:load --trace
           command: |
-            bundle exec rails db:create db:migrate db:seed db:drop
+            bundle exec rails db:create db:migrate db:seed
       - ruby/rspec-test
       - ruby/rubocop-check
 
