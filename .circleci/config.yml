@@ -159,6 +159,7 @@ jobs:
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
+    platform: linux/x86_64
     steps:
       - checkout
       - ruby/install-deps
