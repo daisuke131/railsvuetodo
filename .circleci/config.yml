@@ -153,9 +153,6 @@ jobs:
       - image: circleci/mysql:latest
         command: mysqld --default-authentication-plugin=mysql_native_password
         environment:
-          # MYSQL_DATABASE: app_test
-          # MYSQL_USER: user
-          # MYSQL_PASSWORD: password
           MYSQL_ALLOW_EMPTY_PASSWORD: true
     environment:
       BUNDLE_JOBS: "3"
@@ -182,10 +179,14 @@ jobs:
             dockerize -wait \
             tcp://127.0.0.1:3306 -timeout 1m
       - run: mv ./config/database.yml.ci ./config/database.yml
-      - run: bundle exec rails db:create
-      - run:
-          name: Database setup
-          command: bundle exec rails db:schema:load --trace
+      # - run: bundle exec rails db:create
+      run:
+          name: Testing DB migration and seed
+          command: |
+            bundle exec rails db:create db:migrate db:seed db:drop
+      # - run:
+      #     name: Database setup
+      #     command: bundle exec rails db:schema:load --trace
       - ruby/rspec-test
       - ruby/rubocop-check
 
