@@ -182,6 +182,7 @@ jobs:
             dockerize -wait \
             tcp://127.0.0.1:3306 -timeout 1m
       - run: mv ./config/database.yml.ci ./config/database.yml
+      - run: bundle exec rails db:create
       - run:
           name: Database setup
           command: bundle exec rails db:schema:load --trace
