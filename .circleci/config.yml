@@ -39,7 +39,9 @@ jobs:
       - run: mv ./config/database.yml.ci ./config/database.yml
       - run:
           name: Database setup
-          command: bundle exec rails db:create db:schema:load --trace
+          # command: bundle exec rails db:create db:schema:load --trace
+          command: |
+            bundle exec rails db:create db:migrate db:seed db:drop
       - ruby/rspec-test
       - ruby/rubocop-check
 
