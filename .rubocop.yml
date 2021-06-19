@@ -1,0 +1,11 @@
+inherit_from:
+  - config/rubocop/rubocop.yml
+  - config/rubocop/rails.yml
+  - config/rubocop/rspec.yml
+
+require:
+  - rubocop-rails
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.0
