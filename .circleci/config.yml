@@ -40,6 +40,7 @@ jobs:
       - run:
           name: Database setup
           # command: bundle exec rails db:create db:schema:load --trace
+          # command: bundle exec rails db:create db:schema:load --trace
           command: |
             bundle exec rails db:create db:migrate db:seed db:drop
       - ruby/rspec-test
