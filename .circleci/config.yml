@@ -180,7 +180,7 @@ jobs:
             tcp://127.0.0.1:3306 -timeout 1m
       - run: mv ./config/database.yml.ci ./config/database.yml
       # - run: bundle exec rails db:create
-      run:
+      - run:
           name: Testing DB migration and seed
           command: |
             bundle exec rails db:create db:migrate db:seed db:drop
